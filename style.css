@@ -1,5 +1,93 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
+.loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #e0f0ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loader-wrapper.loader-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.loader-percentage {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: clamp(4rem, 15vw, 12rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #2a2b28;
+  margin: 0;
+  text-align: center;
+  transition: transform 0.05s ease-out;
+}
+
+.loader-welcome-text {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  letter-spacing: 0.02em;
+  color: #2a2b28;
+  margin: 0;
+  text-align: center;
+  opacity: 0;
+  animation: fadeInText 0.6s ease-out 0.4s forwards;
+}
+
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+}
+
+body.loading {
+  overflow: hidden;
+}
+
+body.loading > *:not(#page-loader) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+body.loaded > *:not(#page-loader) {
+  animation: fadeInContent 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
@@ -123,7 +211,6 @@ p {
   color: #cc3a2e;
 }
 
-
 .cursor {
   position: fixed;
   top: 0;
@@ -136,10 +223,6 @@ p {
   z-index: 9999;
   box-shadow: 0 0 8px white;
 }
-
-
-
-
 
 ::-webkit-scrollbar {
   width: 10px;
@@ -181,7 +264,6 @@ p {
   }
 }
 
-
 .logo-box {
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform-origin: center;
@@ -194,7 +276,6 @@ p {
     0 8px 16px -4px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05);
   filter: brightness(1.05);
 }
-
 
 .projects-carousel-wrapper {
   overflow: hidden;
@@ -232,7 +313,6 @@ p {
   will-change: transform, opacity;
 }
 
-
 .project-container:not(.active-card) {
   transform: scale(0.85) rotateY(8deg);
   opacity: 0.6;
@@ -245,7 +325,6 @@ p {
   filter: blur(0);
   z-index: 10;
 }
-
 
 .carousel-counter {
   position: absolute;
@@ -291,7 +370,6 @@ p {
   line-height: 1;
   opacity: 0.7;
 }
-
 
 .carousel-nav-arrows {
   position: absolute;
@@ -351,7 +429,6 @@ p {
   cursor: not-allowed;
   pointer-events: none;
 }
-
 
 @media (min-width: 640px) {
   .project-container {
@@ -435,7 +512,6 @@ p {
   }
 }
 
-
 .project-actions {
   display: flex;
   gap: 0.75rem;
@@ -510,7 +586,6 @@ p {
   opacity: 0.5;
 }
 
-
 @media (min-width: 640px) {
   .project-btn {
     font-size: 0.9375rem;
@@ -521,7 +596,6 @@ p {
     font-size: 1rem;
   }
 }
-
 
 @media (prefers-reduced-motion: reduce) {
   .projects-carousel-container {

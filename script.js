@@ -1,4 +1,48 @@
 
+window.addEventListener("load", function () {
+  document.body.classList.add("loading");
+
+  const loader = document.getElementById("page-loader");
+  const counter = document.getElementById("loader-counter");
+
+  let progress = 0;
+  const targetProgress = 100;
+  const duration = 2500;
+  const startTime = performance.now();
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function animateCounter(currentTime) {
+    const elapsed = currentTime - startTime;
+    const rawProgress = Math.min(elapsed / duration, 1);
+
+    const easedProgress = easeInOutCubic(rawProgress);
+    progress = Math.floor(easedProgress * targetProgress);
+
+    counter.textContent = progress + "%";
+
+    if (rawProgress < 1) {
+      requestAnimationFrame(animateCounter);
+    } else {
+      setTimeout(() => {
+        loader.classList.add("loader-hidden");
+        document.body.classList.remove("loading");
+        document.body.classList.add("loaded");
+
+        window.dispatchEvent(new Event("loaderComplete"));
+
+        setTimeout(() => {
+          loader.remove();
+        }, 600);
+      }, 200); 
+    }
+  }
+
+  requestAnimationFrame(animateCounter);
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   const carouselContainer = document.querySelector(
     ".projects-carousel-container"
@@ -15,12 +59,10 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   let currentIndex = 0;
 
-  
   if (counterTotal) {
     counterTotal.textContent = projectCards.length;
   }
 
-  
   function updateActiveCard() {
     const containerRect = carouselContainer.getBoundingClientRect();
     const centerX = containerRect.left + containerRect.width / 2;
@@ -46,12 +88,10 @@ document.addEventListener("DOMContentLoaded", function () {
       closestCard.classList.add("active-card");
     }
 
-    
     updateArrowStates();
     updateCounter();
   }
 
-  
   function updateArrowStates() {
     if (prevArrow && nextArrow) {
       prevArrow.disabled = currentIndex === 0;
@@ -59,14 +99,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  
   function updateCounter() {
     if (counterCurrent) {
       counterCurrent.textContent = currentIndex + 1;
     }
   }
 
-  
   function scrollToCard(index) {
     if (index < 0 || index >= projectCards.length) return;
 
@@ -85,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  
   if (prevArrow) {
     prevArrow.addEventListener("click", function () {
       if (currentIndex > 0) {
@@ -102,17 +139,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  
   carouselContainer.addEventListener("scroll", updateActiveCard);
 
-  
   updateActiveCard();
 
-  
   carouselContainer.addEventListener(
     "wheel",
     function (e) {
-      
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
@@ -133,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
     { passive: false }
   );
 
-  
   carouselContainer.setAttribute("tabindex", "0");
 
   carouselContainer.addEventListener("keydown", function (e) {
@@ -161,7 +193,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  
   let isScrolling = false;
   let startX;
   let scrollLeft;
@@ -191,6 +222,5 @@ document.addEventListener("DOMContentLoaded", function () {
     carouselContainer.scrollLeft = scrollLeft - walk;
   });
 
-  
   carouselContainer.style.cursor = "grab";
 });
